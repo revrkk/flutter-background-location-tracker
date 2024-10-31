@@ -23,11 +23,11 @@ Future<void> main() async {
       loggingEnabled: true,
       androidConfig: AndroidConfig(
         notificationIcon: 'explore',
-        trackingInterval: Duration(seconds: 4),
+        trackingInterval: Duration(seconds: 5),
         distanceFilterMeters: null,
       ),
       iOSConfig: IOSConfig(
-        activityType: ActivityType.FITNESS,
+        activityType: ActivityType.AUTOMOTIVE,
         distanceFilterMeters: null,
         restartAfterKill: true,
       ),
@@ -245,7 +245,7 @@ class LocationDao {
 void sendNotification(String text) {
   const settings = InitializationSettings(
     android: AndroidInitializationSettings('app_icon'),
-    iOS: IOSInitializationSettings(
+    iOS: DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
       requestSoundPermission: false,
@@ -253,9 +253,8 @@ void sendNotification(String text) {
   );
   FlutterLocalNotificationsPlugin().initialize(
     settings,
-    onSelectNotification: (data) async {
-      print('ON CLICK $data'); // ignore: avoid_print
-    },
+    onDidReceiveBackgroundNotificationResponse: (details) {},
+    onDidReceiveNotificationResponse: (details) {},
   );
   FlutterLocalNotificationsPlugin().show(
     Random().nextInt(9999),
@@ -263,7 +262,7 @@ void sendNotification(String text) {
     text,
     const NotificationDetails(
       android: AndroidNotificationDetails('test_notification', 'Test'),
-      iOS: IOSNotificationDetails(),
+      iOS: DarwinNotificationDetails(),
     ),
   );
 }

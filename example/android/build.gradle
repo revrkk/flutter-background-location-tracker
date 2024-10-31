@@ -1,14 +1,6 @@
-buildscript {
-    ext.kotlin_version = '1.9.10'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+plugins {
+    id "com.android.application" version '8.6.1' apply false
+    id "org.jetbrains.kotlin.android" version "2.0.20" apply false
 }
 
 allprojects {
@@ -18,11 +10,22 @@ allprojects {
     }
 }
 
+ext {
+    flutterFFmpegPackage = "video-lts"
+}
+
 rootProject.buildDir = '../build'
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin("com.android.application") || project.plugins.hasPlugin("com.android.library")) {
+            project.android {
+                compileSdkVersion 34
+                buildToolsVersion "34.0.0"
+            }
+        }
+    }
     project.evaluationDependsOn(':app')
 }
 
