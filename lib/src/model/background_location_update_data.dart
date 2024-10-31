@@ -31,6 +31,9 @@ class BackgroundLocationUpdateData {
   /// The accuracy of the speed value, measured in meters per second. Negative value if not available.
   final double speedAccuracy;
 
+  /// Battery Percentage
+  final int batteryPercentage;
+
   const BackgroundLocationUpdateData({
     required this.lat,
     required this.lon,
@@ -40,6 +43,7 @@ class BackgroundLocationUpdateData {
     required this.course,
     required this.courseAccuracy,
     required this.speed,
+    required this.batteryPercentage,
     required this.speedAccuracy,
   });
 
@@ -54,6 +58,7 @@ class BackgroundLocationUpdateData {
       'courseAccuracy': courseAccuracy,
       'speed': speed,
       'speedAccuracy': speedAccuracy,
+      'batteryPercentage': batteryPercentage,
     };
   }
 
@@ -68,12 +73,14 @@ class BackgroundLocationUpdateData {
       courseAccuracy: map['courseAccuracy'].toDouble(),
       speed: map['speed'].toDouble(),
       speedAccuracy: map['speedAccuracy'].toDouble(),
+      batteryPercentage: map['batteryPercentage'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory BackgroundLocationUpdateData.fromJson(String source) => BackgroundLocationUpdateData.fromMap(json.decode(source));
+  factory BackgroundLocationUpdateData.fromJson(String source) =>
+      BackgroundLocationUpdateData.fromMap(json.decode(source));
 
   @override
   bool operator ==(Object other) {
@@ -119,6 +126,7 @@ class BackgroundLocationUpdateData {
     double? courseAccuracy,
     double? speed,
     double? speedAccuracy,
+    int? batteryPercentage,
   }) {
     return BackgroundLocationUpdateData(
       lat: lat ?? this.lat,
@@ -130,6 +138,7 @@ class BackgroundLocationUpdateData {
       courseAccuracy: courseAccuracy ?? this.courseAccuracy,
       speed: speed ?? this.speed,
       speedAccuracy: speedAccuracy ?? this.speedAccuracy,
+      batteryPercentage: batteryPercentage ?? this.batteryPercentage,
     );
   }
 }

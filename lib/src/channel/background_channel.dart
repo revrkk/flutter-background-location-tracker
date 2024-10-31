@@ -46,16 +46,19 @@ class BackgroundChannel {
         data['course_accuracy'] as double; // ignore: avoid_as
     final speed = data['speed'] as double; // ignore: avoid_as
     final speedAccuracy = data['speed_accuracy'] as double; // ignore: avoid_as
+    final batteryPercentage = data['battery_percentage'] as int;
     await callback(BackgroundLocationUpdateData(
-        lat: lat,
-        lon: lon,
-        horizontalAccuracy: horizontalAccuracy,
-        alt: alt,
-        verticalAccuracy: verticalAccuracy,
-        course: course,
-        courseAccuracy: courseAccuracy,
-        speed: speed,
-        speedAccuracy: speedAccuracy));
+      lat: lat,
+      lon: lon,
+      horizontalAccuracy: horizontalAccuracy,
+      alt: alt,
+      verticalAccuracy: verticalAccuracy,
+      course: course,
+      courseAccuracy: courseAccuracy,
+      speed: speed,
+      speedAccuracy: speedAccuracy,
+      batteryPercentage: batteryPercentage,
+    ));
     return true;
   }
 }

@@ -3,6 +3,9 @@ package com.icapps.background_location_tracker.flutter
 import android.content.Context
 import android.location.Location
 import android.os.Build
+import android.os.BatteryManager
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
 import com.icapps.background_location_tracker.BackgroundLocationTrackerPlugin
@@ -68,6 +71,17 @@ internal object FlutterBackgroundManager {
         data["speed"] = if (location.hasSpeed()) location.speed else -1.0
         data["speed_accuracy"] = -1.0
         data["logging_enabled"] = SharedPrefsUtil.isLoggingEnabled(ctx)
+
+        //val batteryManager = ctx.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+        val batteryStatus = ctx.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val batteryLevel = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) ?: -1
+        val batteryScale = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, -1) ?: -1
+        val batteryPercentage = if (batteryLevel != -1 && batteryScale != -1) {
+            (batteryLevel / batteryScale.toDouble() * 100).toInt()
+        } else {
+            -1
+        }
+        data["battery_percentage"] = batteryPercentage
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             data["vertical_accuracy"] = if (location.hasVerticalAccuracy()) location.verticalAccuracyMeters else -1.0
